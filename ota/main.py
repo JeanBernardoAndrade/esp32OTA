@@ -1,4 +1,4 @@
-print('Led_Teste1')
+print('Led_Teste2')
 
 from time import sleep
 from machine import Pin
