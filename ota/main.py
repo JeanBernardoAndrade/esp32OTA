@@ -1,15 +1,14 @@
 print('Led_Teste1')
 
-import time
+from time import sleep
 from machine import Pin
+
 while True:
-  
-  
   led=Pin(2,Pin.OUT)
   led.value(1)
-  time.sleep(0.5)
+  sleep(0.5)
   led.value(0)
-  time.sleep(0.5)
+  sleep(0.5)
 
 
 
