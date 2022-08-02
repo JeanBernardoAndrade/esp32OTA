@@ -9,7 +9,7 @@ class Duck:
     raw = "https://raw.githubusercontent.com"
     github = "https://github.com"
 
-    def __init__(self, user, repo, url=None, branch="master", working_dir="app", files=["boot.py", "main.py"], headers={}):
+    def __init__(self, user, repo, url=None, branch="master", working_dir="app", files=["boot.py", "main.py","util.py"], headers={}):
         #Duck OTA.
         #Args:
         #user (str): usu谩rio do GitHub.
