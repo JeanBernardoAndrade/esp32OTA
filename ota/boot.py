@@ -49,7 +49,7 @@ try:
         machine.reset()
 
 except:
-    print('Sem att no momento')
+    print('Sem att2 no momento')
     None
 
 
