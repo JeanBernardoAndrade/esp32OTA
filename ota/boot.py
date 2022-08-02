@@ -13,8 +13,8 @@ from time import sleep
 #Conectar com o wifi
 #-------------------
 
-ssid = "carpeado"
-password = "142704@lcs"
+ssid = "JEAN"
+password = "15029394"
 
 #sistema que vai conectar a EPS ao seu wifi
 station = network.WLAN(network.STA_IF)
@@ -36,7 +36,7 @@ else:
 #---
 
 from duck import Duck
-OTA = Duck(user="rafaelbhcosta", repo="duck_ota", working_dir="duck", files=["boot.py", "main.py"])
+OTA = Duck(user="JeanBernardoAndrade", repo="esp32OTA", working_dir="ota", files=["boot.py", "main.py"])
 
 try:
     if OTA.update():
