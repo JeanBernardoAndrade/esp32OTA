@@ -1,8 +1,9 @@
 print('Led_Teste1')
 
+import time
+from machine import Pin
 while True:
-  import time
-  from machine import Pin
+  
   
   led=Pin(2,Pin.OUT)
   led.value(1)
