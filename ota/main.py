@@ -1,4 +1,16 @@
-print('Jean')
+print('Led_Teste1')
+
+while True:
+  import time
+  from machine import Pin
+  
+  led=Pin(2,Pin.OUT)
+  led.value(1)
+  time.sleep(0.5)
+  led.value(0)
+  time.sleep(0.5)
+
+
 
 # Se voc锚 conseguiu fazer tudo certo, o print acima deve aparecer no relat贸rio do seu equipamento
 
