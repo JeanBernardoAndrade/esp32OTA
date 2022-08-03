@@ -68,7 +68,7 @@ def open_json():
 sound_sensor = Pin(4, Pin.IN, Pin.PULL_UP)
 
 def sensor_get_values():
-  sound_value = "Sound captured"
+  sound_value = "Sound Captured"
 
   if sound_sensor.value() == 0: sound_value = "No Sound"
 
