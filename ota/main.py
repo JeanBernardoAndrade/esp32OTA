@@ -1,5 +1,5 @@
 
-from util import create_mqtt_client, get_telemetry_topic, get_c2d_topic, parse_connection, open_json, sensor_get_values, get_telemetry_topic
+from util import create_mqtt_client, get_telemetry_topic, get_c2d_topic, parse_connection, open_json, sensor_get_values, get_telemetry_topic, sound_s
 
 import utime
 import _thread
@@ -57,6 +57,12 @@ def pub_sub():
                         data = sensor_get_values()
                         topic = get_telemetry_topic(survey_data['device_id'])
                         mqtt_client.publish(topic=topic, msg=data)
+
+                    elif datadataset_dec_rep_j['act'] == "sound": 
+                        data = sound_s()
+                        topic = get_telemetry_topic(survey_data['device_id'])
+                        mqtt_client.publish(topic=topic, msg=data)
+
                     else: print("")
                 except: 
                     print("erro - payload enviado: ",datadataset_dec_rep_j)
