@@ -75,7 +75,7 @@ def sensor_get_values():
   
   msg = {}
   msgfull = {}
-  msg["Sound_Sensor"] = Sound_value
+  msg["Sound_Sensor"] = sound_value
   msg["time"] = time.time()
   return json.dumps(msg)
 
