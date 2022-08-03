@@ -64,18 +64,18 @@ def open_json():
 ##############################################
 #Projeto com Sensores
 
-#Sensor Wellison
-movement_sensor = Pin(4, Pin.IN, Pin.PULL_UP)
+#Sensor Jean
+sound_sensor = Pin(4, Pin.IN, Pin.PULL_UP)
 
 def sensor_get_values():
-  movement_value = "Motion captured"
+  sound_value = "Sound captured"
 
-  if movement_sensor.value() == 0: movement_value = "No Motion"
+  if sound_sensor.value() == 0: sound_value = "No Sound"
 
   
   msg = {}
   msgfull = {}
-  msg["Movement_Sensor"] = movement_value
+  msg["Sound_Sensor"] = Sound_value
   msg["time"] = time.time()
   return json.dumps(msg)
 
