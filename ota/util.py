@@ -85,7 +85,7 @@ def sound_s():
     while True:
         sound = sound_sensor.value()
         if sound == 1:
-            print("Som detectada!")
+            print("Som detectado!")
             sleep(1)
         elif sound == 0:
             print("Sem Som!")
