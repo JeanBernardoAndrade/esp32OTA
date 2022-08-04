@@ -1,5 +1,5 @@
 
-from util import create_mqtt_client, get_telemetry_topic, get_c2d_topic, parse_connection, open_json, sensor_get_values, reles_on, reles_off, bomba1_on,bomba1_off, bomba2_on, bomba2_off, fitaled_on, fitaled_off
+from util import create_mqtt_client, get_telemetry_topic, get_c2d_topic, parse_connection, open_json, sensor_get_values, sound_analogic,sound_on,sound_off
 from time import sleep
 import json
 import gc
@@ -44,52 +44,22 @@ def pub_sub():
                 dataset_dec_rep = dataset_dec.replace("'","\"")
                 datadataset_dec_rep_j = set = json.loads(dataset_dec_rep)
                 try:
-                    if datadataset_dec_rep_j['act'] == 'bomba1_off': 
-                        bomba1_off()
+                    if datadataset_dec_rep_j['act'] == 'sound_off': 
+                        sound_off()
                         data = sensor_get_values()
                         topic = get_telemetry_topic(survey_data['device_id'])
                         mqtt_client.publish(topic=topic, msg=data)
-                    elif datadataset_dec_rep_j['act'] == 'bomba1_on': 
-                        bomba1_on()
-                        data = sensor_get_values()
-                        topic = get_telemetry_topic(survey_data['device_id'])
-                        mqtt_client.publish(topic=topic, msg=data)
-                        sleep(30)
-                        bomba1_off()
-                    elif datadataset_dec_rep_j['act'] == 'bomba2_off': 
-                        bomba2_off()
-                        data = sensor_get_values()
-                        topic = get_telemetry_topic(survey_data['device_id'])
-                        mqtt_client.publish(topic=topic, msg=data)
-                    elif datadataset_dec_rep_j['act'] == 'bomba2_on': 
-                        bomba2_on()
+
+                    elif datadataset_dec_rep_j['act'] == 'sound_on': 
+                        sound_on()
                         data = sensor_get_values()
                         topic = get_telemetry_topic(survey_data['device_id'])
                         mqtt_client.publish(topic=topic, msg=data)
                         sleep(30)
-                        bomba2_off()
+                        sound_off()
+                    
                     elif datadataset_dec_rep_j['act'] == "reset": reset_mac()
-                    elif datadataset_dec_rep_j['act'] == 'fitaled_off': 
-                        fitaled_off()
-                        data = sensor_get_values()
-                        topic = get_telemetry_topic(survey_data['device_id'])
-                        mqtt_client.publish(topic=topic, msg=data) 
-                    elif datadataset_dec_rep_j['act'] == 'fitaled_on': 
-                        fitaled_on() 
-                        data = sensor_get_values()
-                        topic = get_telemetry_topic(survey_data['device_id'])
-                        mqtt_client.publish(topic=topic, msg=data)                     
-                    elif datadataset_dec_rep_j['act'] == 'reles_off': 
-                        reles_off()
-                        data = sensor_get_values()
-                        topic = get_telemetry_topic(survey_data['device_id'])
-                        mqtt_client.publish(topic=topic, msg=data)
-                    elif datadataset_dec_rep_j['act'] == 'reles_on': 
-                        reles_on()
-                        data = sensor_get_values()
-                        topic = get_telemetry_topic(survey_data['device_id'])
-                        mqtt_client.publish(topic=topic, msg=data)                   
-                    elif datadataset_dec_rep_j['act'] == "keepa": print("keepa")
+                                 
                     elif datadataset_dec_rep_j['act'] == "getdata": 
                         data = sensor_get_values()
                         topic = get_telemetry_topic(survey_data['device_id'])
