@@ -1,13 +1,9 @@
 from robust import MQTTClient
 import re #regex para coletar os valores do form
 import json
-from machine import ADC, Pin, I2C
-import machine
-import random
-from time import sleep
-import time
-import utime
-
+from machine import ADC, Pin, I2C, reset
+from random import uniform
+from time import sleep, time
 
 try:
   import usocket as socket
@@ -46,6 +42,7 @@ def parse_connection(connection_string):
     dictionary = dict(arg.split(VALUE_SEPARATOR, 1) for arg in cs_args)
     return dictionary
 
+
 def save_json(dictValues):
     with open('vars.json', 'w') as sj: 
         json.dump(dictValues, sj)
@@ -61,42 +58,150 @@ def open_json():
     rj.close()
     return survey_data
 
-##############################################
-#Projeto com Sensores
 
-#Sensor Jean
-sound_sensor = Pin(4, Pin.IN, Pin.PULL_UP)
+
+##############################################
+#Projeto das plantas
+
+#BOMBA1
+bomba1 = Pin(16, Pin.OUT)
+
+#BOMBA2
+bomba2 = Pin(17, Pin.OUT)
+#bomba2.value(not bomba1.value())
+
+#LED
+fitaled1 = Pin(5, Pin.OUT)
+#fitaled1.value(not fitaled1.value())
+
+#BOIA1
+boia1 = Pin(4, Pin.IN, Pin.PULL_UP)
+
+#BOIA2
+boia2 = Pin(15, Pin.IN, Pin.PULL_UP)
+
+#v1
+lux_param = 0
+temp = 0.0
+humid = 0.0
+lux = 0.0
+soil = 0.0
+ph = 0.0
+seg_bomba1 = 0
+seg_bomba1end = 0
+bomba1_val = 0
+seg_bomba2 = 0
+seg_bomba2end = 0
+bomba2_val = 0
+watts = 0.0
+seg_watts = 0
+seg_water = 0
+total_water_seg_t = 0
+
+def ph():
+  x = uniform(7.0, 8.9)
+  return float(x)
+
+seg_watts = time()
+
+def watts():
+  watts = ((0.25 * 5) * ((time() - seg_watts)))/3600
+  return float(watts)
+
+def water():
+  total_water_seg = 0
+  total_water_seg = ((seg_bomba1 - seg_bomba1end) * 0.025) + ((seg_bomba2 - seg_bomba2end) * 0.025)
+  total_water_seg_t = total_water_seg
+  return float(total_water_seg_t)
+
+def bomba1_on():
+  print("bomba1_on")
+  bomba1 = Pin(16, Pin.OUT)
+  bomba1.value(1)
+  return bomba1.value()
+  
+def bomba1_off():
+  print("bomba1_off")
+  bomba1 = Pin(16, Pin.OUT)
+  bomba1.value(0)
+  return bomba1.value()
+
+def bomba2_on():
+  print("bomba2_on")
+  bomba2 = Pin(17, Pin.OUT)
+  bomba2.value(1)
+  return bomba2.value()
+
+def bomba2_off():
+  print("bomba2_off")
+  bomba2 = Pin(17, Pin.OUT)
+  bomba2.value(0)
+  return bomba2.value()
+
+def reles_on():
+  print("reles_on")
+  bomba1 = Pin(16, Pin.OUT)
+  bomba1.value(1)
+  bomba2 = Pin(17, Pin.OUT)
+  bomba2.value(1)
+  fitaled1 = Pin(5, Pin.OUT)
+  fitaled1.value(1)
+
+def reles_off():
+  print("reles_off")
+  bomba1 = Pin(16, Pin.OUT)
+  bomba1.value(0)
+  bomba2 = Pin(17, Pin.OUT)
+  bomba2.value(0)
+  fitaled1 = Pin(5, Pin.OUT)
+  fitaled1.value(0)
+
+def fitaled_on():
+  print("fitaled_on")
+  fitaled = Pin(5, Pin.OUT)
+  fitaled.value(1)
+  return fitaled.value()
+
+def fitaled_off():
+  print("fitaled_off")
+  fitaled = Pin(5, Pin.OUT)
+  fitaled.value(0)
+  return fitaled.value()
 
 def sensor_get_values():
-  sound_value = "Sound Captured"
-
-  if sound_sensor.value() == 0: sound_value = "No Sound"
-
-  
+  bomba1 = Pin(16, Pin.OUT)
+  bomba2 = Pin(17, Pin.OUT)
+  fitaled1 = Pin(5, Pin.OUT)
+  boia1 = Pin(4, Pin.IN, Pin.PULL_UP)
+  boia2 = Pin(15, Pin.IN, Pin.PULL_UP)
+  #print('Sensors started')
+  moisture2 = Pin(34, Pin.IN)     # create input pin on GPIO2
+  moisture2_value = moisture2.value()
+  rain = Pin(35, Pin.IN)     # create input pin on GPIO2
+  rain_value = "Raining"
+  boia1_value = "Water level full"
+  boia2_value = "Water level full"
+  if rain.value() == 1: rain_value = "Not raining"
+  if boia1.value() == 0: boia1_value = "Water level critic"
+  if boia2.value() == 0: boia2_value = "Water level critic"
   msg = {}
   msgfull = {}
-  msg["Sound_Sensor"] = sound_value
-  msg["time"] = time.time()
+  msg["sensorname"] = "BITPLANT"
+  msg["sensortype"] = "mixed sensors"
+  msg["humid_limit"] = float(moisture2_value)
+  #msg["humid"] = float(humid)
+  #msg["temp"] = float(temp)
+  #msg["lux"] = float(lux)
+  #msg["soil"] = float(soil)
+  msg["rain"] = rain_value
+  msg["float1"] = boia1_value
+  msg["float2"] = boia2_value
+  msg["ph"] = ph()
+  msg["bomba1"] = bomba1.value()
+  msg["bomba2"] = bomba2.value()
+  msg["led"] = fitaled1.value()
+  msg["watts_spend"] = watts()
+  msg["water_spend"] = float(total_water_seg_t)
+  msg["time"] = time()
   return json.dumps(msg)
-
-
-
-def sound_s():
-    while True:
-        sound = sound_sensor.value()
-        if sound == 1:
-            print("Som detectado!")
-            sleep(1)
-        elif sound == 0:
-            print("Sem Som!")
-            sleep(1)
-
-
-
-
-
-
-
-
-
 
