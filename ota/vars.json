@@ -1,9 +1,9 @@
 {
-    "pwd": "", 
-    "device_id": "", 
-    "sas_token_str": "", 
-    "ssid": "", 
-    "hostname": "", 
+    "pwd": "15029394", 
+    "device_id": "jeanbernardoteste", 
+    "sas_token_str": "SharedAccessSignature sr=SquadIoT.azure-devices.net%2Fdevices%2Fjeanbernardoteste&sig=TgJxh2nQpwJgNqefysO%2FqtGtuCHZTw232zhsvYtzjgk%3D&se=1676928078", 
+    "ssid": "JEAN", 
+    "hostname": "SquadIoT.azure-devices.net", 
     "username": ""
 }
 
