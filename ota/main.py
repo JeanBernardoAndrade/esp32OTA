@@ -3,7 +3,7 @@ from util import create_mqtt_client, get_telemetry_topic, get_c2d_topic, parse_c
 from time import sleep
 import json
 import gc
-import senko
+
 from machine import reset
 
 gc.collect()
