@@ -5,36 +5,52 @@ import esp
 esp.osdebug(None)
 #essa classe garante que toda memoria em desuso vai ser liberada
 import gc
-
-
-import network
-from machine import reset
-from time import sleep, localtime
-from util import open_json
-
-
 gc.collect() 
+import network
+from time import sleep
 
 #-------------------
 #Conectar com o wifi
 #-------------------
 
-#Coleta das de dados variaveis
-survey_data = open_json()
-ssid = survey_data['ssid']
-password = survey_data['pwd']
-device_id = survey_data['device_id']
+ssid = "JEAN"
+password = "15029394"
 
-#sistema que vai conectar a EPS ao wifi determnado em vars
+#sistema que vai conectar a EPS ao seu wifi
 station = network.WLAN(network.STA_IF)
 station.active(True)
 station.connect(ssid, password)
-sleep(5)
-
+sleep(6)
 
 #Caso de tudo certo vai conectar e notificar
 if station.isconnected() == True:
-    print('Conectado com Sucesso ')
+    print('Conectado com Sucesso')
     print(station.ifconfig())
-    print('Device ID', device_id, str(localtime()))
+    
+#Se der errado a mensagem abaixo aparece
+else:
+    print("Problemas ao se conectar\nReveja os dados da Wi-Fi em boot.py")
+
+#---
+#OTA
+#---
+
+from duck import Duck
+OTA = Duck(user="JeanBernardoAndrade", repo="esp32OTA", working_dir="ota", files=["boot.py", "main.py","util.py"])
+
+try:
+    if OTA.update():
+        print('Novos arquivos encontrados. Baixando!')
+        for x in range(6):
+            print('.', end='')
+            sleep(1)
+        print('Reiniciando!')
+        sleep(2)
+        machine.reset()
+
+except:
+    print('Sem att no momento')
+    None
+
+
 
