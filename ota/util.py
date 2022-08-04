@@ -61,147 +61,34 @@ def open_json():
 
 
 ##############################################
-#Projeto das plantas
+#Sound Sensor
 
-#BOMBA1
-bomba1 = Pin(16, Pin.OUT)
+sound_sensor = ADC(Pin(36))
 
-#BOMBA2
-bomba2 = Pin(17, Pin.OUT)
-#bomba2.value(not bomba1.value())
+def sound_analogic():
+    while True:
+        sound_sensor = adc.read(sound_sensor)
+        sleep(0.5)
 
-#LED
-fitaled1 = Pin(5, Pin.OUT)
-#fitaled1.value(not fitaled1.value())
-
-#BOIA1
-boia1 = Pin(4, Pin.IN, Pin.PULL_UP)
-
-#BOIA2
-boia2 = Pin(15, Pin.IN, Pin.PULL_UP)
-
-#v1
-lux_param = 0
-temp = 0.0
-humid = 0.0
-lux = 0.0
-soil = 0.0
-ph = 0.0
-seg_bomba1 = 0
-seg_bomba1end = 0
-bomba1_val = 0
-seg_bomba2 = 0
-seg_bomba2end = 0
-bomba2_val = 0
-watts = 0.0
-seg_watts = 0
-seg_water = 0
-total_water_seg_t = 0
-
-def ph():
-  x = uniform(7.0, 8.9)
-  return float(x)
-
-seg_watts = time()
-
-def watts():
-  watts = ((0.25 * 5) * ((time() - seg_watts)))/3600
-  return float(watts)
-
-def water():
-  total_water_seg = 0
-  total_water_seg = ((seg_bomba1 - seg_bomba1end) * 0.025) + ((seg_bomba2 - seg_bomba2end) * 0.025)
-  total_water_seg_t = total_water_seg
-  return float(total_water_seg_t)
-
-def bomba1_on():
-  print("bomba1_on")
-  bomba1 = Pin(16, Pin.OUT)
-  bomba1.value(1)
-  return bomba1.value()
+def sound_on():
+  print("sound_on")
+  sound = ADC(Pin(36))
+  sound.value(1)
+  return sound.value()
   
-def bomba1_off():
-  print("bomba1_off")
-  bomba1 = Pin(16, Pin.OUT)
-  bomba1.value(0)
-  return bomba1.value()
-
-def bomba2_on():
-  print("bomba2_on")
-  bomba2 = Pin(17, Pin.OUT)
-  bomba2.value(1)
-  return bomba2.value()
-
-def bomba2_off():
-  print("bomba2_off")
-  bomba2 = Pin(17, Pin.OUT)
-  bomba2.value(0)
-  return bomba2.value()
-
-def reles_on():
-  print("reles_on")
-  bomba1 = Pin(16, Pin.OUT)
-  bomba1.value(1)
-  bomba2 = Pin(17, Pin.OUT)
-  bomba2.value(1)
-  fitaled1 = Pin(5, Pin.OUT)
-  fitaled1.value(1)
-
-def reles_off():
-  print("reles_off")
-  bomba1 = Pin(16, Pin.OUT)
-  bomba1.value(0)
-  bomba2 = Pin(17, Pin.OUT)
-  bomba2.value(0)
-  fitaled1 = Pin(5, Pin.OUT)
-  fitaled1.value(0)
-
-def fitaled_on():
-  print("fitaled_on")
-  fitaled = Pin(5, Pin.OUT)
-  fitaled.value(1)
-  return fitaled.value()
-
-def fitaled_off():
-  print("fitaled_off")
-  fitaled = Pin(5, Pin.OUT)
-  fitaled.value(0)
-  return fitaled.value()
+def sound_off():
+  print("sound_off")
+  sound = ADC(Pin(36))
+  sound.value(0)
+  return sound.value()        
 
 def sensor_get_values():
-  bomba1 = Pin(16, Pin.OUT)
-  bomba2 = Pin(17, Pin.OUT)
-  fitaled1 = Pin(5, Pin.OUT)
-  boia1 = Pin(4, Pin.IN, Pin.PULL_UP)
-  boia2 = Pin(15, Pin.IN, Pin.PULL_UP)
-  #print('Sensors started')
-  moisture2 = Pin(34, Pin.IN)     # create input pin on GPIO2
-  moisture2_value = moisture2.value()
-  rain = Pin(35, Pin.IN)     # create input pin on GPIO2
-  rain_value = "Raining"
-  boia1_value = "Water level full"
-  boia2_value = "Water level full"
-  if rain.value() == 1: rain_value = "Not raining"
-  if boia1.value() == 0: boia1_value = "Water level critic"
-  if boia2.value() == 0: boia2_value = "Water level critic"
+  sound = ADC(Pin(36))
+
   msg = {}
   msgfull = {}
-  msg["sensorname"] = "BITPLANT"
-  msg["sensortype"] = "mixed sensors"
-  msg["humid_limit"] = float(moisture2_value)
-  #msg["humid"] = float(humid)
-  #msg["temp"] = float(temp)
-  #msg["lux"] = float(lux)
-  #msg["soil"] = float(soil)
-  msg["rain"] = rain_value
-  msg["float1"] = boia1_value
-  msg["float2"] = boia2_value
-  msg["ph"] = ph()
-  msg["bomba1"] = bomba1.value()
-  msg["bomba2"] = bomba2.value()
-  msg["led"] = fitaled1.value()
-  msg["watts_spend"] = watts()
-  msg["water_spend"] = float(total_water_seg_t)
-  msg["time"] = time()
+
+ 
+  msg["sound"] = sound.value()
   return json.dumps(msg)
 
