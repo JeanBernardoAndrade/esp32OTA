@@ -87,8 +87,6 @@ def sensor_get_values():
 
   msg = {}
   msgfull = {}
-
- 
   msg["sound"] = sound.value()
   return json.dumps(msg)
 
