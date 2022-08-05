@@ -1,9 +1,12 @@
+
+
 from robust import MQTTClient
 import re #regex para coletar os valores do form
 import json
 from machine import ADC, Pin, I2C, reset
 from random import uniform
 from time import sleep, time
+import esp32
 
 try:
   import usocket as socket
@@ -63,30 +66,26 @@ def open_json():
 ##############################################
 #Sound Sensor
 
-sound_sensor = ADC(Pin(36))
+som = ADC(Pin(36))
 
 def sound_analogic():
     while True:
         sound_sensor = adc.read(sound_sensor)
         sleep(0.5)
-
-def sound_on():
-  print("sound_on")
-  sound = ADC(Pin(36))
-  sound.value(1)
-  return sound.value()
-  
-def sound_off():
-  print("sound_off")
-  sound = ADC(Pin(36))
-  sound.value(0)
-  return sound.value()        
-
+    
 def sensor_get_values():
-  sound = ADC(Pin(36))
+  som = ADC(Pin(36))
+  som_b = som.read()
+  
+  temp = esp32.raw_temperature()
+  tempC = (temp - 32) / 1.8
 
   msg = {}
   msgfull = {}
-  msg["sound"] = sound.value()
+  msg["sound"] = som_b
+  msg["temperatura"] = tempC
   return json.dumps(msg)
+
+
+
 

@@ -31,7 +31,7 @@ def resetboot():
     try:
         while True:
             time.sleep(60)
-            print('Reiniciando ap贸s 60 segundos')
+            print('Reiniciando ap璐竤 60 segundos')
             machine.reset()
     except Exception as e:
         print(e)
